@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float disableTime = 1f;
     private float lastDisableTime;
 
+    public static Transform playerPos;
+
     private InputAction move;
     private Rigidbody rb;
     
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
     {
         move = InputSystem.actions.FindAction("Move");
         rb = GetComponent<Rigidbody>();
+
+        playerPos = transform;
     }
 
     void FixedUpdate()
@@ -50,6 +54,10 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         Obstacle.OnPlayerHit += TakeDamage;
+    }
+    private void OnDisable()
+    {
+        Obstacle.OnPlayerHit -= TakeDamage;
     }
 
     void TakeDamage()
