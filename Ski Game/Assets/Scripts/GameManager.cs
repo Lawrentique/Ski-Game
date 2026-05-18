@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
         FinishGate.FinishRace += FinishRace;
         Flag.RacePenalty += AddRacePenalty;
     }
+    
+    public void OnDisable()
+    {
+        StartGate.StartRace -= StartRace;
+        FinishGate.FinishRace -= FinishRace;
+        Flag.RacePenalty -= AddRacePenalty;
+    }
 
     void AddRacePenalty()
     {
@@ -37,6 +44,7 @@ public class GameManager : MonoBehaviour
     void StartRace()
     {
         raceStart = System.DateTime.Now;
+        racing = true;
         Debug.Log("Starting race");
     }
 
@@ -44,6 +52,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Finishing race");
         racing = false;
+        GameData.Instance.AddLevelTime((float)raceTime.TotalMilliseconds / 1000f);
         if (raceTime < bestTime)
         {
             bestTimeText.text = "Best Time: " + raceTime.ToString("mm\\:ss");

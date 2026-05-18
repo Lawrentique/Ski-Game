@@ -18,11 +18,13 @@ public class PlayerController : MonoBehaviour
 
     private InputAction move;
     private Rigidbody rb;
+    private Animator anim;
     
     void Awake()
     {
         move = InputSystem.actions.FindAction("Move");
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
 
         playerPos = transform;
     }
@@ -49,6 +51,9 @@ public class PlayerController : MonoBehaviour
             Vector2 moveVector = move.ReadValue<Vector2>();
             transform.Rotate(0, moveVector.x * turnSpeed * Time.fixedDeltaTime, 0);
         }
+        
+        anim.SetBool("grounded", isGrounded);
+        anim.SetFloat("playerSpeed", rb.linearVelocity.magnitude);
     }
 
     private void OnEnable()
