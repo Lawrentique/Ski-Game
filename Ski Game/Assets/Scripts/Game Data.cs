@@ -7,6 +7,18 @@ public class GameData : MonoBehaviour
     public List<float> bestTimes = new List<float>();
     private static GameData instance;
     [SerializeField] private string leaderboardKey = "LeaderboardLVL1-";
+
+    [ContextMenu("Clear Leaderboard")]
+    private void ClearLeaderboard()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+           PlayerPrefs.DeleteKey(leaderboardKey + i); 
+        }
+        PlayerPrefs.DeleteKey(leaderboardKey + "Count");
+        bestTimes.Clear();
+        PlayerPrefs.Save();
+    }
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -25,7 +37,7 @@ public class GameData : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            if(i <= bestTimes.Count) 
+            if(i < bestTimes.Count) 
                 PlayerPrefs.SetFloat(leaderboardKey + i, bestTimes[i]);
         }
         PlayerPrefs.Save();
@@ -48,8 +60,6 @@ public class GameData : MonoBehaviour
         SaveLeaderboard();
     }
     
-    
-
     public static GameData Instance
     {
         get {return instance;}
